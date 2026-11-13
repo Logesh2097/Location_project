@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local configuration and data
+.env
+db.sqlite3
+
+# Tooling
+.ruff_cache/
+.coverage
