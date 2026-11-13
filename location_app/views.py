@@ -1,13 +1,13 @@
-
 from django.shortcuts import render
-import requests
-import json
 
-# Create your views here.
+from .geolocation import GeolocationError, client_ip, locate
+
+
 def index(request):
-    ip = requests.get('https://api.ipify.org?format=json')
-    ip_data = json.loads(ip.text)
-    res = requests.get('http://ip-api.com/json/115.97.97.54')
-    location_app_data_one = res.text
-    location_app_data = json.loads(location_app_data_one)
-    return render(request, 'index.html', {'data': location_app_data})
+    """Show the approximate location of the visitor's IP address."""
+    context = {"data": None, "error": ""}
+    try:
+        context["data"] = locate(client_ip(request))
+    except GeolocationError as exc:
+        context["error"] = str(exc)
+    return render(request, "index.html", context)
